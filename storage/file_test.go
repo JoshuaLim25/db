@@ -3,6 +3,9 @@ package storage
 import (
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestSaveData(t *testing.T) {
@@ -14,19 +17,13 @@ func TestSaveData(t *testing.T) {
 	
 	// Test saving data
 	err := SaveData(testFile, testData)
-	if err != nil {
-		t.Fatalf("SaveData failed: %v", err)
-	}
+	require.NoError(t, err, "SaveData should succeed")
 	
 	// Verify file exists and contains correct data
 	data, err := os.ReadFile(testFile)
-	if err != nil {
-		t.Fatalf("Failed to read saved file: %v", err)
-	}
+	require.NoError(t, err, "Should be able to read saved file")
 	
-	if string(data) != string(testData) {
-		t.Errorf("Expected %q, got %q", testData, data)
-	}
+	assert.Equal(t, testData, data, "File should contain the correct data")
 }
 
 func TestSaveDataAtomicity(t *testing.T) {
@@ -38,17 +35,17 @@ func TestSaveDataAtomicity(t *testing.T) {
 	
 	// Test that temporary files are cleaned up on success
 	err := SaveData(testFile, testData)
-	if err != nil {
-		t.Fatalf("SaveData failed: %v", err)
-	}
+	require.NoError(t, err, "SaveData should succeed")
 	
 	// Check that no temporary files remain
-	entries, _ := os.ReadDir(".")
+	entries, err := os.ReadDir(".")
+	require.NoError(t, err, "Should be able to read directory")
+	
 	for _, entry := range entries {
 		if entry.Name() != testFile && 
 		   len(entry.Name()) > len(testFile) && 
 		   entry.Name()[:len(testFile)+4] == testFile+".tmp" {
-			t.Errorf("Temporary file not cleaned up: %s", entry.Name())
+			assert.Fail(t, "Temporary file not cleaned up", "Found temp file: %s", entry.Name())
 		}
 	}
 }

@@ -40,3 +40,5 @@ func (m *mockKV) Delete(key []byte) {}
 func (m *mockKV) FindLarger(key []byte) Iterator {
 	return &mockIterator{}
 }
+
+// Note: BTree interface compliance test is in the btree package to avoid import cycles
