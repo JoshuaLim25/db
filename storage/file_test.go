@@ -43,7 +43,7 @@ func TestSaveDataAtomicity(t *testing.T) {
 	
 	for _, entry := range entries {
 		if entry.Name() != testFile && 
-		   len(entry.Name()) > len(testFile) && 
+		   len(entry.Name()) >= len(testFile)+4 && 
 		   entry.Name()[:len(testFile)+4] == testFile+".tmp" {
 			assert.Fail(t, "Temporary file not cleaned up", "Found temp file: %s", entry.Name())
 		}

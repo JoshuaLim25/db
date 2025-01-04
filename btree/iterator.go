@@ -1,7 +1,5 @@
 package btree
 
-import "github.com/JoshuaLim25/db"
-
 // BTreeIterator implements the Iterator interface for B+Tree
 type BTreeIterator struct {
 	current *Node
@@ -45,4 +43,4 @@ func (it *BTreeIterator) ContainsNext() bool {
 }
 
 // Ensure BTreeIterator implements the Iterator interface
-var _ db.Iterator = (*BTreeIterator)(nil)
+var _ Iterator = (*BTreeIterator)(nil)

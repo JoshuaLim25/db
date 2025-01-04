@@ -2,8 +2,6 @@ package btree
 
 import (
 	"bytes"
-	
-	"github.com/JoshuaLim25/db"
 )
 
 // BTree represents a B+Tree structure
@@ -72,7 +70,7 @@ func (bt *BTree) Delete(key []byte) {
 }
 
 // FindLarger returns an iterator for keys larger than the given key
-func (bt *BTree) FindLarger(key []byte) db.Iterator {
+func (bt *BTree) FindLarger(key []byte) Iterator {
 	if bt.root == nil {
 		return &BTreeIterator{current: nil, index: 0}
 	}
